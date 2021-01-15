@@ -8,13 +8,9 @@ library(scales)
 library(hrbrthemes)
 
 defaultNumberBrackets <- 3
-
 defaultEvasionRate <- 30
-
 defaultStockDepreciation <- 20
-
 defaultIndividualExample <- 4000000
-
 defaultRate <- 0.1
 
 listBrackets <- list("1% (3.8m Rand)" = 99000,
