@@ -28,7 +28,7 @@ function(input, output, server){
   
   # define all reactive values I'll need
   # output$value <- renderPrint({ input$action })
-  
+
   individualExampleR <- eventReactive(input$action1, {
     input$individualExample
   })
@@ -315,38 +315,41 @@ function(input, output, server){
           " million Rand</b>,", 
           " i.e. <b>",
           total_tax_to_gdp, 
-          "%</b> of South Africa's 2018 GDP. In the two graphs below, you can also compare this figure to selected government expenditures (left), or revenues collected through other tax instruments (right).",
+          "% of South Africa's 2018 GDP</b>. In the two graphs below, you can also compare this figure to selected government expenditures (above), or revenues collected through other tax instruments (bellow).",
           " For instance, it represents<b> ",
           total_tax_to_socialProtection, 
-          "% </b> of all government expenditures on social protection, or <b> ",
+          "% of all government expenditures on social protection</b> , or <b> ",
           total_tax_to_netVAT_2017,
-          "% </b> of all revenue collected through the Value Added Tax."
+          "% of all revenue collected through the Value Added Tax</b>."
           )
   })
-
   
-output$plotCompareMacroRev <- renderPlotly({
+output$plotCompareMacroRev <- renderPlot({
   # Create data
   data <- data.frame(
-    name=c("Education", "Social Protection", "Health", "Public Order\nand Safety", "Debt \nService") ,  
+    name=c("Education", "Social \nProtection", "Health", "Public Order\nand Safety", "Debt \nService") ,  
     Percentage= (round(allResults()$total_tax_nationwide/1000000) / expenditures) * 100 
   )
   g1 <- ggplot(data, aes(x = reorder(name, Percentage), y=Percentage)) + 
     geom_bar(stat = "identity", fill = "#FF6666", width=0.6) +
-    ggtitle("Wealth Tax Revenue Expressed as % of Government Expenditures") +
-    theme(plot.title = element_text(size=10, face="bold", hjust = 0.5), 
+    ggtitle("Wealth Tax Revenue as % of Government Expenditures") +
+    scale_y_continuous(breaks = seq(0, max(data$Percentage)+10, by = 10)) +
+    theme(plot.title = element_text(size=16, face="bold", hjust = 0.5), 
           axis.title.x = element_text(),
-          axis.text.x = element_text(colour="black", hjust=1),
+          axis.text.x = element_text(size=14, colour="black", hjust=0.5),
+          axis.title.y = element_text(size=14, face="bold"),
+          axis.text.y = element_text(size=13, colour="black", hjust=0.5),
           panel.background = element_blank(),
           panel.grid.major.y = element_line(colour = "grey"),
           panel.border = element_rect(colour = "black", fill=NA, size=1)
                   ) +
     labs(y="Share of total (%)", x = "")
-  ggplotly(g1, tooltip=c("Percentage"))
+  g1
+  # ggplotly(g1, tooltip=c("Percentage"))
 })  
 
 
-output$plotCompareMacroTax <- renderPlotly({
+output$plotCompareMacroTax <- renderPlot({
   # Create data
   data <- data.frame(
     name=c("Personal\nIncome Tax", "Value\nAdded Tax", "Corporate\nIncome Tax", "All Other\nTaxes", "Excise Duties\nand Fuel Levy") ,  
@@ -355,18 +358,22 @@ output$plotCompareMacroTax <- renderPlotly({
 
   g2 <- ggplot(data, aes(x = reorder(name, Percentage), y=Percentage)) + 
     geom_bar(stat = "identity", fill = "#FF6666", width=0.6) +
-    ggtitle("Wealth Tax Revenue Expressed as % of Other Taxes") +
-    theme(plot.title = element_text(size=10, face="bold", hjust = 0.5), 
+    ggtitle("Wealth Tax Revenue as % of Other Taxes") +
+    scale_y_continuous(breaks = seq(0, max(data$Percentage)+10, by = 10)) +
+    theme(plot.title = element_text(size=16, face="bold", hjust = 0.5), 
           axis.title.x = element_text(),
-          axis.text.x = element_text(colour="black", hjust=1),
+          axis.text.x = element_text(size=14, colour="black", hjust=0.5),
+          axis.title.y = element_text(size=14, face="bold"),
+          axis.text.y = element_text(size=13, colour="black", hjust=0.5),
           panel.background = element_blank(),
           panel.grid.major.y = element_line(colour = "grey"),
           panel.border = element_rect(colour = "black", fill=NA, size=1)
           ) +
     labs(y="Share of total (%)", x = "")
-  
-  ggplotly(g2, tooltip=c("Percentage"))
-})  
+  g2
+  # ggplotly(g2, tooltip=c("Percentage"))
+})
+
 
   # Generate final table 
   output$table_ind <- renderReactable({ 

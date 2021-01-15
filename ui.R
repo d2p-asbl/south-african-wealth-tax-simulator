@@ -1,5 +1,4 @@
 library(reactable)
-library(DT)
 library(tidyr)
 library(ggplot2)
 library(plotly)
@@ -7,7 +6,6 @@ library(shinyBS)
 library(gridExtra)
 library(scales)
 library(hrbrthemes)
-# library(shinyjs)
 
 defaultNumberBrackets <- 3
 
@@ -42,7 +40,6 @@ listBrackets <- list("1% (3.8m Rand)" = 99000,
 navbarPage("",
      
       tabPanel("Home",
-              #  includeCSS("style.css"),
                fluidRow(
                  column(1,
                         ),
@@ -56,11 +53,12 @@ navbarPage("",
                         "This tool is the result of a collaborative project between", 
                         HTML(paste0("Aroop Chatterjee,",tags$sup("1"))), 
                         HTML(paste0("Léo Czajka,",tags$sup("2,3"))), 
-                        HTML(paste0("and Amory Gethin",tags$sup("3"))), 
+                        HTML(paste0("and Amory Gethin",tags$sup("2"))), 
                         ".",
                         br(),
                         br(),
                         "The detailed companion study to this simulator can be found here[ADD LINK].",
+                        "The source code is", tags$a(href="https://github.com/d2p-asbl/south-african-wealth-tax-simulator/", "here"),
                         br(),
                         br(),
                         "The underlying data used to compute aggregate figures come from our recent work on", 
@@ -71,13 +69,13 @@ navbarPage("",
                         tags$i("olivia.ronsain@psemail.eu."), 
                         br(), 
                         br(),
-                        h6("1 : Southern Centre for Inequality Studies - Johannesburg"), 
-                        h6("2 : Louvain Institute of Data Analysis and Modeling in economics and statistics - Louvain-la-Neuve"), 
-                        h6("3 : World Inequality Lab - Paris"),
+                        h6(tags$a(href="https://www.wits.ac.za/scis/","1 : Southern Centre for Inequality Studies - Johannesburg")), 
+                        h6(tags$a(href="https://wid.world/", "2 : World Inequality Lab - Paris")),
+                        h6(tags$a(href="https://uclouvain.be/en/research-institutes/lidam/ires", "3 : Louvain Institute of Data Analysis and Modeling in economics and statistics - Louvain-la-Neuve")), 
                         splitLayout(cellWidths = c("33%", "33%", "33%"),  
-                                    img(src="logo-scis.png",height="80%", width="80%"),
-                                    img(src="logo-wil.png",height = "70%", width = "80%"),
-                                    img(src="lidam.png",height = "80%", width = "80%")
+                                    tags$a(href="https://www.wits.ac.za/scis/",img(src="logo-scis.png",height="80%", width="80%")),
+                                    tags$a(href="https://wid.world/", img(src="logo-wil.png",height = "70%", width = "80%")),
+                                    tags$a(href="https://uclouvain.be/en/research-institutes/lidam/ires", img(src="lidam.png",height = "80%", width = "80%", style = "margin: 2px; margin-left: -4px; "))
                                     )
                  ),
                  column(6,
@@ -130,7 +128,7 @@ navbarPage("",
                  condition = "input.nbrBrackets == 1",
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p1b1r", label = "Rate 1 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1),
+                          numericInput(inputId = "p1b1r", label = "Rate 1 (%)", value = 4, min = 0.1 , max = 100, step = 0.1),
                           bsPopover("p1b1r", title = "",
                                     "Tax rates will only apply to wealth <i>above</i> the corresponding threshold. They must be <b>strictly increasing</b>.",
                                     placement = "right", options = list(container = "body")), 
@@ -194,22 +192,22 @@ navbarPage("",
                  condition = "input.nbrBrackets == 2",
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p2b1r", label = "Rate 1 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p2b1r", label = "Rate 1 (%)", value = 3, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p2b1t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99000)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p2b2r", label = "Rate 2 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p2b2r", label = "Rate 2 (%)", value = 5, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p2b2t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99900)
                    )
                  )
                ), 
@@ -254,42 +252,42 @@ navbarPage("",
                  condition = "input.nbrBrackets == 4",
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p4b1r", label = "Rate 1 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p4b1r", label = "Rate 1 (%)", value = 2, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p4b1t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99000)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p4b2r", label = "Rate 2 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p4b2r", label = "Rate 2 (%)", value = 5, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p4b2t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99900)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p4b3r", label = "Rate 3 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p4b3r", label = "Rate 3 (%)", value = 7, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p4b3t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99950)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p4b4r", label = "Rate 4 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p4b4r", label = "Rate 4 (%)", value = 9, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p4b4t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99990)
                    )
                  )
                ), 
@@ -299,52 +297,52 @@ navbarPage("",
                  condition = "input.nbrBrackets == 5",
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p5b1r", label = "Rate 1 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p5b1r", label = "Rate 1 (%)", value = 2, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p5b1t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99000)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p5b2r", label = "Rate 2 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p5b2r", label = "Rate 2 (%)", value = 3, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p5b2t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99500)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p5b3r", label = "Rate 3 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p5b3r", label = "Rate 3 (%)", value = 5, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p5b3t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99900)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p5b4r", label = "Rate 4 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p5b4r", label = "Rate 4 (%)", value = 7, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p5b4t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99950)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p5b5r", label = "Rate 5 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p5b5r", label = "Rate 5 (%)", value = 9, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p5b5t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99990)
                    )
                  )
                ), 
@@ -355,62 +353,62 @@ navbarPage("",
                  condition = "input.nbrBrackets == 6",
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p6b1r", label = "Rate 1 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p6b1r", label = "Rate 1 (%)", value = 2, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p6b1t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99000)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p6b2r", label = "Rate 2 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p6b2r", label = "Rate 2 (%)", value = 3, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p6b2t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99500)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p6b3r", label = "Rate 3 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p6b3r", label = "Rate 3 (%)", value = 5, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p6b3t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99900)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p6b4r", label = "Rate 4 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p6b4r", label = "Rate 4 (%)", value = 7, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p6b4t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99950)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p6b5r", label = "Rate 5 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p6b5r", label = "Rate 5 (%)", value = 8, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p6b5t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99970)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p6b6r", label = "Rate 6 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p6b6r", label = "Rate 6 (%)", value = 9, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p6b6t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99990)
                    )
                  )
                ), 
@@ -421,72 +419,72 @@ navbarPage("",
                  condition = "input.nbrBrackets == 7",
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p7b1r", label = "Rate 1 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p7b1r", label = "Rate 1 (%)", value = 1, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p7b1t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99000)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p7b2r", label = "Rate 2 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p7b2r", label = "Rate 2 (%)", value = 3, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p7b2t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99500)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p7b3r", label = "Rate 3 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p7b3r", label = "Rate 3 (%)", value = 5, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p7b3t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99900)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p7b4r", label = "Rate 4 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p7b4r", label = "Rate 4 (%)", value = 7, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p7b4t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99950)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p7b5r", label = "Rate 5 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p7b5r", label = "Rate 5 (%)", value = 8, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p7b5t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99970)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p7b6r", label = "Rate 6 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p7b6r", label = "Rate 6 (%)", value = 9, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p7b6t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99980)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p7b7r", label = "Rate 7 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p7b7r", label = "Rate 7 (%)", value = 10, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p7b7t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99990)
                    )
                  )
                ), 
@@ -496,82 +494,82 @@ navbarPage("",
                  condition = "input.nbrBrackets == 8",
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p8b1r", label = "Rate 1 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p8b1r", label = "Rate 1 (%)", value = 1, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p8b1t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99000)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p8b2r", label = "Rate 2 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p8b2r", label = "Rate 2 (%)", value = 2, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p8b2t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99500)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p8b3r", label = "Rate 3 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p8b3r", label = "Rate 3 (%)", value = 5, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p8b3t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99900)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p8b4r", label = "Rate 4 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p8b4r", label = "Rate 4 (%)", value = 6, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p8b4t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99950)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p8b5r", label = "Rate 5 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p8b5r", label = "Rate 5 (%)", value = 7, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p8b5t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99960)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p8b6r", label = "Rate 6 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p8b6r", label = "Rate 6 (%)", value = 8, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p8b6t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99970)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p8b7r", label = "Rate 7 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p8b7r", label = "Rate 7 (%)", value = 9, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p8b7t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99980)
                    )
                  ),
                  fixedRow(
                    column(4,
-                          numericInput(inputId = "p8b8r", label = "Rate 8 (%)", value = defaultRate, min = 0.1 , max = 100, step = 0.1)
+                          numericInput(inputId = "p8b8r", label = "Rate 8 (%)", value = 10, min = 0.1 , max = 100, step = 0.1)
                    ),
                    column(8,
                           selectInput(inputId = "p8b8t", label = "On the Top", 
                                       choices = listBrackets, 
-                                      selected = 0.1)
+                                      selected = 99990)
                    )
                  )
                ), 
@@ -658,8 +656,15 @@ navbarPage("",
                             ),
                           br(),
                           br(), 
+                          
                           fluidRow(
-                            splitLayout(cellWidths = c("50%", "50%"), plotlyOutput("plotCompareMacroRev"), plotlyOutput("plotCompareMacroTax"))
+                            column(2,
+                            ),
+                            column(8,
+                                   plotOutput("plotCompareMacroRev"), plotOutput("plotCompareMacroTax")
+                            ),
+                            column(2,
+                            )
                             )
                           ),
 
