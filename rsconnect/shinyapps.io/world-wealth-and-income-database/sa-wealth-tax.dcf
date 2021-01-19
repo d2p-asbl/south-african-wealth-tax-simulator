@@ -1,0 +1,10 @@
+name: sa-wealth-tax
+title:
+username:
+account: world-wealth-and-income-database
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3477686
+bundleId: 4112732
+url: https://world-wealth-and-income-database.shinyapps.io/sa-wealth-tax/
+when: 1610984384.72005
