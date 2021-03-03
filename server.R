@@ -318,9 +318,10 @@ function(input, output, server){
           "% of South Africa's 2018 GDP</b>. In the two graphs below, you can also compare this figure to selected government expenditures (above), or revenues collected through other tax instruments (bellow).",
           " For instance, it represents<b> ",
           total_tax_to_socialProtection, 
-          "% of all government expenditures on social protection</b> , or <b> ",
+          "% of all government expenditures on social protection</b>, or <b> ",
           total_tax_to_netVAT_2017,
           "% of all revenue collected through the Value Added Tax</b>."
+          # " (source: p. 274 and 288 of ", tags$a(href = "http://www.treasury.gov.za/documents/national%20budget/2019/review/FullBR.pdf", "2019 Budget Review's PDF", target="_blank"), ")."
           )
   })
   
